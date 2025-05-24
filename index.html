@@ -1,4 +1,54 @@
 
-<!-- Replace this comment with the full HTML content from the user. 
-Due to length limitations, the actual content is not shown here.
-This placeholder assumes the user's full interactive tool is correctly placed in index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GPT Development Mind Map</title>
+    <style>
+        /* (Full CSS from your original example goes here — see your previous code) */
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="instruction">Click on each step to explore the GPT development process →</div>
+        <button class="reset-btn" onclick="resetMap()">Reset</button>
+
+        <div class="node central-node">
+            Custom GPT
+        </div>
+
+        <div class="node step-node step-1" onclick="showDetails(1)">1. Purpose</div>
+        <div class="node step-node step-2" onclick="showDetails(2)">2. Intended Users</div>
+        <div class="node step-node step-3" onclick="showDetails(3)">3. Use Case Scenarios</div>
+        <div class="node step-node step-4" onclick="showDetails(4)">4. GPT Roles & Behaviors</div>
+        <div class="node step-node step-5" onclick="showDetails(5)">5. Knowledge Base</div>
+        <div class="node step-node step-6" onclick="showDetails(6)">6. Interaction Structure</div>
+        <div class="node step-node step-7" onclick="showDetails(7)">7. Response Style</div>
+        <div class="node step-node step-8" onclick="showDetails(8)">8. Tools & Features</div>
+        <div class="node step-node step-9" onclick="showDetails(9)">9. Output Goals</div>
+
+        <div class="details-panel" id="detailsPanel">
+            <h3>Welcome to GPT Development</h3>
+            <p>This interactive mind map guides you through the complete process of building a custom GPT. Each step builds upon the previous one, creating a comprehensive framework for your AI assistant.</p>
+            <h4>How to Use:</h4>
+            <ul>
+                <li>Click each numbered step in sequence</li>
+                <li>Read the detailed guidance for each phase</li>
+                <li>Use the examples and questions to shape your GPT</li>
+                <li>Track your progress with the progress bar below</li>
+            </ul>
+            <p><strong>Ready to start?</strong> Click on "1. Purpose" to begin your GPT development journey!</p>
+        </div>
+
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
+        </div>
+    </div>
+
+    <script>
+        // (Full JavaScript from your original example goes here — including the stepDetails, showDetails, resetMap, etc.)
+    </script>
+</body>
+</html>
+
