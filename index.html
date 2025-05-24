@@ -1,63 +1,582 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>GPT Development Mind Map</title>
-  <style>
-    /* Insert full CSS from your interactive tool here */
-    body {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
-      min-height: 100vh;
-      padding: 20px;
-      overflow-x: auto;
-    }
-    /* ... rest of full CSS omitted here for brevity */
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GPT Development Mind Map</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            min-height: 100vh;
+            padding: 20px;
+            overflow-x: auto;
+        }
+
+        .container {
+            width: 1400px;
+            height: 800px;
+            position: relative;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 40px;
+        }
+
+        .node {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 15px 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            border: 2px solid transparent;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            min-width: 140px;
+            font-weight: 600;
+            backdrop-filter: blur(10px);
+        }
+
+        .node:hover {
+            transform: scale(1.05);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
+            border-color: #2563eb;
+        }
+
+        .node.active {
+            background: linear-gradient(135deg, #2563eb, #1d4ed8);
+            color: white;
+            transform: scale(1.1);
+        }
+
+        .central-node {
+            top: 350px;
+            right: 200px;
+            background: linear-gradient(135deg, #1e40af, #1d4ed8);
+            color: white;
+            font-size: 18px;
+            font-weight: bold;
+            min-width: 120px;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .step-node {
+            background: linear-gradient(135deg, #0ea5e9, #0284c7);
+            color: white;
+            font-size: 14px;
+        }
+
+        .step-1 { top: 50px; left: 50px; }
+        .step-2 { top: 130px; left: 50px; }
+        .step-3 { top: 210px; left: 50px; }
+        .step-4 { top: 290px; left: 50px; }
+        .step-5 { top: 370px; left: 50px; }
+        .step-6 { top: 450px; left: 50px; }
+        .step-7 { top: 530px; left: 50px; }
+        .step-8 { top: 610px; left: 50px; }
+        .step-9 { top: 690px; left: 50px; }
+
+        .connection {
+            position: absolute;
+            height: 2px;
+            background: linear-gradient(90deg, #0ea5e9, #2563eb);
+            transform-origin: left center;
+            transition: all 0.3s ease;
+            opacity: 0.6;
+        }
+
+        .connection.active {
+            opacity: 1;
+            height: 3px;
+            box-shadow: 0 0 10px rgba(37, 99, 235, 0.5);
+        }
+
+        .details-panel {
+            position: absolute;
+            top: 50px;
+            right: 50px;
+            width: 350px;
+            height: 650px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            overflow-y: auto;
+            transform: translateX(100%);
+            transition: transform 0.3s ease;
+        }
+
+        .details-panel.visible {
+            transform: translateX(0);
+        }
+
+        .details-panel h3 {
+            color: #1e40af;
+            margin-bottom: 15px;
+            font-size: 20px;
+            border-bottom: 2px solid #e5e7eb;
+            padding-bottom: 10px;
+        }
+
+        .details-panel h4 {
+            color: #2563eb;
+            margin: 15px 0 8px 0;
+            font-size: 16px;
+        }
+
+        .details-panel ul {
+            margin: 10px 0;
+            padding-left: 20px;
+        }
+
+        .details-panel li {
+            margin: 5px 0;
+            color: #374151;
+            line-height: 1.5;
+        }
+
+        .progress-bar {
+            position: absolute;
+            bottom: 30px;
+            left: 50px;
+            right: 50px;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #0ea5e9, #2563eb);
+            width: 0%;
+            transition: width 0.5s ease;
+            border-radius: 4px;
+        }
+
+        .instruction {
+            position: absolute;
+            top: 10px;
+            left: 50px;
+            color: white;
+            font-size: 16px;
+            font-weight: 500;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .reset-btn {
+            position: absolute;
+            top: 15px;
+            right: 420px;
+            background: linear-gradient(135deg, #dc2626, #b91c1c);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .reset-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+        }
+    </style>
 </head>
 <body>
-  <div class="container">
-    <div class="instruction">Click on each step to explore the GPT development process →</div>
-    <button class="reset-btn" onclick="resetMap()">Reset</button>
+    <div class="container">
+        <div class="instruction">Click on each step to explore the GPT development process →</div>
+        <button class="reset-btn" onclick="resetMap()">Reset</button>
 
-    <div class="node central-node">Custom GPT</div>
+        <div class="node central-node">
+            Custom GPT
+        </div>
 
-    <div class="node step-node step-1" onclick="showDetails(1)">1. Purpose</div>
-    <div class="node step-node step-2" onclick="showDetails(2)">2. Intended Users</div>
-    <div class="node step-node step-3" onclick="showDetails(3)">3. Use Case Scenarios</div>
-    <div class="node step-node step-4" onclick="showDetails(4)">4. GPT Roles & Behaviors</div>
-    <div class="node step-node step-5" onclick="showDetails(5)">5. Knowledge Base</div>
-    <div class="node step-node step-6" onclick="showDetails(6)">6. Interaction Structure</div>
-    <div class="node step-node step-7" onclick="showDetails(7)">7. Response Style</div>
-    <div class="node step-node step-8" onclick="showDetails(8)">8. Tools & Features</div>
-    <div class="node step-node step-9" onclick="showDetails(9)">9. Output Goals</div>
+        <div class="node step-node step-1" onclick="showDetails(1)">
+            1. Purpose
+        </div>
+        <div class="node step-node step-2" onclick="showDetails(2)">
+            2. Intended Users
+        </div>
+        <div class="node step-node step-3" onclick="showDetails(3)">
+            3. Use Case Scenarios
+        </div>
+        <div class="node step-node step-4" onclick="showDetails(4)">
+            4. GPT Roles & Behaviors
+        </div>
+        <div class="node step-node step-5" onclick="showDetails(5)">
+            5. Knowledge Base
+        </div>
+        <div class="node step-node step-6" onclick="showDetails(6)">
+            6. Interaction Structure
+        </div>
+        <div class="node step-node step-7" onclick="showDetails(7)">
+            7. Response Style
+        </div>
+        <div class="node step-node step-8" onclick="showDetails(8)">
+            8. Tools & Features
+        </div>
+        <div class="node step-node step-9" onclick="showDetails(9)">
+            9. Output Goals
+        </div>
 
-    <div class="details-panel" id="detailsPanel">
-      <h3>Welcome to GPT Development</h3>
-      <p>This interactive mind map guides you through the complete process of building a custom GPT. Each step builds upon the previous one, creating a comprehensive framework for your AI assistant.</p>
-      <h4>How to Use:</h4>
-      <ul>
-        <li>Click each numbered step in sequence</li>
-        <li>Read the detailed guidance for each phase</li>
-        <li>Use the examples and questions to shape your GPT</li>
-        <li>Track your progress with the progress bar below</li>
-      </ul>
-      <p><strong>Ready to start?</strong> Click on "1. Purpose" to begin your GPT development journey!</p>
+        <div class="details-panel" id="detailsPanel">
+            <h3>Welcome to GPT Development</h3>
+            <p>This interactive mind map guides you through the complete process of building a custom GPT. Each step builds upon the previous one, creating a comprehensive framework for your AI assistant.</p>
+            <h4>How to Use:</h4>
+            <ul>
+                <li>Click each numbered step in sequence</li>
+                <li>Read the detailed guidance for each phase</li>
+                <li>Use the examples and questions to shape your GPT</li>
+                <li>Track your progress with the progress bar below</li>
+            </ul>
+            <p><strong>Ready to start?</strong> Click on "1. Purpose" to begin your GPT development journey!</p>
+        </div>
+
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
+        </div>
     </div>
 
-    <div class="progress-bar">
-      <div class="progress-fill" id="progressFill"></div>
-    </div>
-  </div>
+    <script>
+        let currentStep = 0;
+        const totalSteps = 9;
 
-  <script>
-    // Insert full JavaScript from your interactive tool here
-    // Including: stepDetails, showDetails, addConnection, resetMap, updateProgress
-  </script>
+        const stepDetails = {
+            1: {
+                title: "Define Your GPT's Purpose",
+                content: `
+                    <h4>Core Questions to Answer:</h4>
+                    <ul>
+                        <li>What specific problem will your GPT solve?</li>
+                        <li>What unique value does it provide?</li>
+                        <li>How does it differ from general AI assistants?</li>
+                    </ul>
+                    <h4>Examples:</h4>
+                    <ul>
+                        <li>"Social Work Case Documentation Assistant"</li>
+                        <li>"Academic Writing Mentor for Graduate Students"</li>
+                        <li>"Crisis Intervention Response Guide"</li>
+                    </ul>
+                    <h4>Action Items:</h4>
+                    <ul>
+                        <li>Write a 1-2 sentence purpose statement</li>
+                        <li>Identify 3 key benefits your GPT provides</li>
+                        <li>Define what success looks like</li>
+                    </ul>
+                `
+            },
+            2: {
+                title: "Identify Your Intended Users",
+                content: `
+                    <h4>User Profiling Questions:</h4>
+                    <ul>
+                        <li>Who is your primary audience?</li>
+                        <li>What's their professional background/expertise level?</li>
+                        <li>What are their typical pain points?</li>
+                        <li>How tech-savvy are they?</li>
+                    </ul>
+                    <h4>User Categories to Consider:</h4>
+                    <ul>
+                        <li>Students (undergraduate, graduate, doctoral)</li>
+                        <li>Practitioners (new, experienced, supervisors)</li>
+                        <li>Researchers and academics</li>
+                        <li>Administrative staff</li>
+                    </ul>
+                    <h4>Document:</h4>
+                    <ul>
+                        <li>Create user personas with specific needs</li>
+                        <li>List their common workflows</li>
+                        <li>Note their preferred communication styles</li>
+                    </ul>
+                `
+            },
+            3: {
+                title: "Map Out Use Case Scenarios",
+                content: `
+                    <h4>Scenario Development:</h4>
+                    <ul>
+                        <li>What are the top 5 situations where users need help?</li>
+                        <li>What questions do they ask most frequently?</li>
+                        <li>What tasks take them the most time?</li>
+                    </ul>
+                    <h4>Example Scenarios:</h4>
+                    <ul>
+                        <li>"Help me write a case assessment report"</li>
+                        <li>"Guide me through ethical decision-making"</li>
+                        <li>"Suggest intervention strategies for this situation"</li>
+                        <li>"Review my research methodology"</li>
+                    </ul>
+                    <h4>For Each Scenario, Define:</h4>
+                    <ul>
+                        <li>User's starting point</li>
+                        <li>Desired outcome</li>
+                        <li>Typical obstacles they face</li>
+                        <li>How your GPT will help</li>
+                    </ul>
+                `
+            },
+            4: {
+                title: "Define GPT Roles & Behaviors",
+                content: `
+                    <h4>Role Definition:</h4>
+                    <ul>
+                        <li>What professional role should your GPT embody?</li>
+                        <li>What expertise does it demonstrate?</li>
+                        <li>How formal/informal should it be?</li>
+                    </ul>
+                    <h4>Behavioral Characteristics:</h4>
+                    <ul>
+                        <li>Supportive and encouraging vs. direct and efficient</li>
+                        <li>Asks clarifying questions vs. makes assumptions</li>
+                        <li>Provides step-by-step guidance vs. high-level concepts</li>
+                        <li>Focuses on best practices vs. creative solutions</li>
+                    </ul>
+                    <h4>Professional Boundaries:</h4>
+                    <ul>
+                        <li>What topics should it avoid?</li>
+                        <li>When should it refer to human professionals?</li>
+                        <li>How does it handle ethical dilemmas?</li>
+                    </ul>
+                `
+            },
+            5: {
+                title: "Build Your Knowledge Base",
+                content: `
+                    <h4>Knowledge Sources to Include:</h4>
+                    <ul>
+                        <li>Professional standards and ethical codes</li>
+                        <li>Best practice guidelines</li>
+                        <li>Relevant theories and frameworks</li>
+                        <li>Common forms and templates</li>
+                        <li>Legal and regulatory requirements</li>
+                    </ul>
+                    <h4>Content Organization:</h4>
+                    <ul>
+                        <li>Core concepts and definitions</li>
+                        <li>Step-by-step procedures</li>
+                        <li>Examples and case studies</li>
+                        <li>Troubleshooting guides</li>
+                    </ul>
+                    <h4>Quality Considerations:</h4>
+                    <ul>
+                        <li>Ensure information is current and accurate</li>
+                        <li>Include multiple perspectives when appropriate</li>
+                        <li>Cite authoritative sources</li>
+                        <li>Regular updates and maintenance plan</li>
+                    </ul>
+                `
+            },
+            6: {
+                title: "Design Interaction Structure",
+                content: `
+                    <h4>Conversation Flow:</h4>
+                    <ul>
+                        <li>How does the GPT greet new users?</li>
+                        <li>What information does it gather first?</li>
+                        <li>How does it guide users through complex tasks?</li>
+                    </ul>
+                    <h4>Question Types:</h4>
+                    <ul>
+                        <li>Open-ended exploration questions</li>
+                        <li>Multiple choice for quick decisions</li>
+                        <li>Yes/no for confirmation</li>
+                        <li>Scale ratings for assessments</li>
+                    </ul>
+                    <h4>Interaction Patterns:</h4>
+                    <ul>
+                        <li>Information gathering → Analysis → Recommendations</li>
+                        <li>Problem identification → Solution brainstorming → Action planning</li>
+                        <li>Assessment → Feedback → Improvement suggestions</li>
+                    </ul>
+                `
+            },
+            7: {
+                title: "Establish Response Style",
+                content: `
+                    <h4>Communication Tone:</h4>
+                    <ul>
+                        <li>Professional yet approachable</li>
+                        <li>Empathetic and supportive</li>
+                        <li>Clear and jargon-free when possible</li>
+                        <li>Confident but not prescriptive</li>
+                    </ul>
+                    <h4>Response Structure:</h4>
+                    <ul>
+                        <li>Start with acknowledgment/summary</li>
+                        <li>Provide main content in digestible chunks</li>
+                        <li>Include relevant examples</li>
+                        <li>End with next steps or questions</li>
+                    </ul>
+                    <h4>Language Considerations:</h4>
+                    <ul>
+                        <li>Match user's expertise level</li>
+                        <li>Use inclusive, culturally sensitive language</li>
+                        <li>Explain technical terms when necessary</li>
+                        <li>Offer multiple explanation styles</li>
+                    </ul>
+                `
+            },
+            8: {
+                title: "Select Tools & Features",
+                content: `
+                    <h4>Built-in Capabilities:</h4>
+                    <ul>
+                        <li>Web browsing for current information</li>
+                        <li>Code interpreter for data analysis</li>
+                        <li>DALL-E for visual aids and diagrams</li>
+                        <li>File upload and analysis</li>
+                    </ul>
+                    <h4>Custom Actions (API Integration):</h4>
+                    <ul>
+                        <li>Database lookups</li>
+                        <li>Form submission</li>
+                        <li>Calendar integration</li>
+                        <li>Document generation</li>
+                    </ul>
+                    <h4>Feature Selection Criteria:</h4>
+                    <ul>
+                        <li>Does it solve a real user problem?</li>
+                        <li>Is it technically feasible?</li>
+                        <li>Does it enhance or complicate the experience?</li>
+                        <li>Can it be maintained and updated?</li>
+                    </ul>
+                `
+            },
+            9: {
+                title: "Define Output Goals",
+                content: `
+                    <h4>Success Metrics:</h4>
+                    <ul>
+                        <li>User satisfaction and engagement</li>
+                        <li>Task completion rates</li>
+                        <li>Time saved for users</li>
+                        <li>Quality of generated content</li>
+                    </ul>
+                    <h4>Output Types:</h4>
+                    <ul>
+                        <li>Structured reports and assessments</li>
+                        <li>Step-by-step action plans</li>
+                        <li>Educational content and explanations</li>
+                        <li>Decision-making frameworks</li>
+                    </ul>
+                    <h4>Quality Assurance:</h4>
+                    <ul>
+                        <li>Regular testing with real users</li>
+                        <li>Feedback collection mechanisms</li>
+                        <li>Performance monitoring</li>
+                        <li>Continuous improvement process</li>
+                    </ul>
+                    <h4>🎉 Congratulations!</h4>
+                    <p>You've completed all steps of GPT development planning. Now you're ready to build and deploy your custom GPT!</p>
+                `
+            }
+        };
+
+        function showDetails(step) {
+            // Remove active class from all nodes
+            document.querySelectorAll('.node').forEach(node => {
+                node.classList.remove('active');
+            });
+
+            // Add active class to clicked node
+            document.querySelector(`.step-${step}`).classList.add('active');
+
+            // Show details panel
+            const panel = document.getElementById('detailsPanel');
+            panel.innerHTML = `<h3>${stepDetails[step].title}</h3>${stepDetails[step].content}`;
+            panel.classList.add('visible');
+
+            // Update progress
+            currentStep = step;
+            updateProgress();
+
+            // Add connection animation
+            setTimeout(() => {
+                addConnection(step);
+            }, 300);
+        }
+
+        function addConnection(step) {
+            // Remove existing connections
+            document.querySelectorAll('.connection').forEach(conn => conn.remove());
+
+            // Add new connection
+            const stepNode = document.querySelector(`.step-${step}`);
+            const centralNode = document.querySelector('.central-node');
+            
+            const connection = document.createElement('div');
+            connection.className = 'connection active';
+            
+            const stepRect = stepNode.getBoundingClientRect();
+            const centralRect = centralNode.getBoundingClientRect();
+            const containerRect = document.querySelector('.container').getBoundingClientRect();
+            
+            const startX = stepRect.right - containerRect.left - 40;
+            const startY = stepRect.top + stepRect.height/2 - containerRect.top - 40;
+            const endX = centralRect.left - containerRect.left - 40;
+            const endY = centralRect.top + centralRect.height/2 - containerRect.top - 40;
+            
+            const length = Math.sqrt(Math.pow(endX - startX, 2) + Math.pow(endY - startY, 2));
+            const angle = Math.atan2(endY - startY, endX - startX) * 180 / Math.PI;
+            
+            connection.style.left = startX + 'px';
+            connection.style.top = startY + 'px';
+            connection.style.width = length + 'px';
+            connection.style.transform = `rotate(${angle}deg)`;
+            
+            document.querySelector('.container').appendChild(connection);
+        }
+
+        function updateProgress() {
+            const progressFill = document.getElementById('progressFill');
+            const percentage = (currentStep / totalSteps) * 100;
+            progressFill.style.width = percentage + '%';
+        }
+
+        function resetMap() {
+            currentStep = 0;
+            updateProgress();
+            
+            document.querySelectorAll('.node').forEach(node => {
+                node.classList.remove('active');
+            });
+            
+            document.querySelectorAll('.connection').forEach(conn => conn.remove());
+            
+            const panel = document.getElementById('detailsPanel');
+            panel.classList.remove('visible');
+            panel.innerHTML = `
+                <h3>Welcome to GPT Development</h3>
+                <p>This interactive mind map guides you through the complete process of building a custom GPT. Each step builds upon the previous one, creating a comprehensive framework for your AI assistant.</p>
+                <h4>How to Use:</h4>
+                <ul>
+                    <li>Click each numbered step in sequence</li>
+                    <li>Read the detailed guidance for each phase</li>
+                    <li>Use the examples and questions to shape your GPT</li>
+                    <li>Track your progress with the progress bar below</li>
+                </ul>
+                <p><strong>Ready to start?</strong> Click on "1. Purpose" to begin your GPT development journey!</p>
+            `;
+        }
+
+        // Show initial details panel
+        document.getElementById('detailsPanel').classList.add('visible');
+    </script>
 </body>
 </html>
-
